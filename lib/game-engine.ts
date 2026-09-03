@@ -153,8 +153,15 @@ export class GameEngine {
     }
   }
 
+  private lastFlapTime: number = 0;
+
   public flap() {
     if (!this.isRunning || this.isPaused) return;
+
+    // Mobile tap touch debounce (prevent erratic multi-flaps on single physical tap)
+    const now = performance.now();
+    if (now - this.lastFlapTime < 85) return;
+    this.lastFlapTime = now;
 
     this.player.vy = GAME_CONFIG.flapStrength;
     this.player.angle = -0.45; // ~25 deg tilt up
@@ -316,7 +323,11 @@ export class GameEngine {
       GAME_CONFIG.minObstacleGap,
       GAME_CONFIG.baseObstacleGap * diffInfo.gapMultiplier
     );
-    return { speed, gap };
+    const spacing = Math.max(
+      280,
+      GAME_CONFIG.obstacleSpacing / diffInfo.speedMultiplier
+    );
+    return { speed, gap, spacing };
   }
 
   private loop = (timestamp: number) => {
@@ -332,7 +343,7 @@ export class GameEngine {
   };
 
   private update(dt: number) {
-    const { speed, gap } = this.getSpeedAndGap();
+    const { speed, gap, spacing } = this.getSpeedAndGap();
 
     // 1. Player Physics
     this.player.vy += GAME_CONFIG.gravity;
@@ -357,9 +368,9 @@ export class GameEngine {
 
     // Spawn obstacle if needed
     const lastObstacle = this.obstacles[this.obstacles.length - 1];
-    if (!lastObstacle || (this.canvas.width - lastObstacle.x) >= GAME_CONFIG.obstacleSpacing) {
-      const minTop = 60;
-      const maxTop = this.canvas.height - gap - 60;
+    if (!lastObstacle || (this.canvas.width - lastObstacle.x) >= spacing) {
+      const minTop = 80;
+      const maxTop = Math.max(minTop + 40, this.canvas.height - gap - 80);
       const topHeight = Math.floor(Math.random() * (maxTop - minTop)) + minTop;
 
       const zoneInfo = ZONES[this.currentZone];
@@ -450,7 +461,7 @@ export class GameEngine {
 
     const px = this.player.x;
     const py = this.player.y;
-    const pr = this.player.radius - 3; // slight grace margin for fun gameplay
+    const pr = this.player.radius - 7; // Generous 7px grace margin for fair and fun gameplay
 
     // Top pipe rectangle check
     const inTopX = px + pr > obs.x && px - pr < obs.x + obs.width;

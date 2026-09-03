@@ -99,7 +99,12 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ character, onGameOver })
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleFlap]);
 
-  const handleCanvasClick = (e: React.MouseEvent | React.TouchEvent) => {
+  const handlePointerDown = (e: React.PointerEvent) => {
+    // Ignore flap if touch/click was performed on HUD buttons, modals, or interactive overlays
+    const target = e.target as HTMLElement;
+    if (target && target.closest && (target.closest("button") || target.closest("a") || target.closest(".pointer-events-auto"))) {
+      return;
+    }
     e.preventDefault();
     handleFlap();
   };
@@ -130,9 +135,8 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ character, onGameOver })
 
   return (
     <div
-      className="relative w-full h-full min-h-screen bg-black overflow-hidden select-none cursor-pointer"
-      onMouseDown={handleCanvasClick}
-      onTouchStart={handleCanvasClick}
+      className="relative w-full h-full min-h-screen bg-black overflow-hidden select-none cursor-pointer touch-none"
+      onPointerDown={handlePointerDown}
     >
       {/* HTML5 Canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />

@@ -17,13 +17,13 @@ export interface GameConfig {
 }
 
 export const GAME_CONFIG: GameConfig = {
-  gravity: 0.42,
-  flapStrength: -8.2,
-  terminalVelocity: 10,
-  baseObstacleSpeed: 2.8,
-  baseObstacleGap: 170,
-  minObstacleGap: 125,
-  obstacleSpacing: 260,
+  gravity: 0.35,              // Smooth and gentle fall physics
+  flapStrength: -6.6,          // Easy-to-control flight impulse for mobile tap & spacebar
+  terminalVelocity: 8.0,       // Max fall speed ceiling
+  baseObstacleSpeed: 2.0,      // Relaxed starting speed for easy warmup
+  baseObstacleGap: 240,        // Very wide starting gap (super easy early game)
+  minObstacleGap: 160,         // Floor for minimum gap size
+  obstacleSpacing: 370,        // Generous starting spacing between obstacles
   scorePerObstacle: 10,
   quizBonus: 50,
   streakBonusThreshold: 3,
@@ -31,7 +31,7 @@ export const GAME_CONFIG: GameConfig = {
   zoneBonusPoints: 100,
   quizInterval: 5,
   quizTimeLimit: 10,
-  postQuizGraceObstacles: 2, // Number of obstacles player can pass through safely after quiz
+  postQuizGraceObstacles: 3,   // 3 safe grace passes after each quiz
 };
 
 const GAME_CONFIG_KEY = "himanika_custom_game_config";
@@ -124,7 +124,7 @@ export interface DifficultyInfo {
 
 export const DIFFICULTIES: DifficultyInfo[] = [
   { level: 'EASY', minScore: 0, speedMultiplier: 1.0, gapMultiplier: 1.0, color: '#00ff9d' },
-  { level: 'NORMAL', minScore: 200, speedMultiplier: 1.25, gapMultiplier: 0.9, color: '#00f0ff' },
-  { level: 'HARD', minScore: 500, speedMultiplier: 1.5, gapMultiplier: 0.8, color: '#ffb700' },
-  { level: 'INSANE', minScore: 800, speedMultiplier: 1.8, gapMultiplier: 0.72, color: '#ff007f' },
+  { level: 'NORMAL', minScore: 150, speedMultiplier: 1.15, gapMultiplier: 0.92, color: '#00f0ff' },
+  { level: 'HARD', minScore: 400, speedMultiplier: 1.32, gapMultiplier: 0.84, color: '#ffb700' },
+  { level: 'INSANE', minScore: 800, speedMultiplier: 1.55, gapMultiplier: 0.76, color: '#ff007f' },
 ];
