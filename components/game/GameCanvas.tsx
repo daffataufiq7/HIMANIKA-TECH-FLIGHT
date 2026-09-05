@@ -89,14 +89,26 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ character, onGameOver })
   // Keyboard & Click input listeners
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.code === "Space" || e.key === " " || e.key === "ArrowUp") {
+      const target = e.target as HTMLElement | null;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) {
+        return;
+      }
+
+      if (e.code === "Space" || e.key === " " || e.key === "Spacebar" || e.key === "ArrowUp" || e.key === "w" || e.key === "W") {
         e.preventDefault();
+        e.stopPropagation();
+
+        // Blur any focused button/element so Spacebar doesn't trigger button clicks
+        if (document.activeElement && document.activeElement instanceof HTMLElement) {
+          document.activeElement.blur();
+        }
+
         handleFlap();
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown, { capture: true });
+    return () => window.removeEventListener("keydown", handleKeyDown, { capture: true });
   }, [handleFlap]);
 
   const handlePointerDown = (e: React.PointerEvent) => {
