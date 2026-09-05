@@ -20,16 +20,16 @@ export interface GameConfig {
 }
 
 export const GAME_CONFIG: GameConfig = {
-  gravity: 0.40,              // Slightly crisper gravity
-  flapStrength: -7.2,          // Slightly stronger flap impulse
-  terminalVelocity: 9.2,       // Max fall velocity
-  baseObstacleSpeed: 2.6,      // Starting obstacle speed (slightly faster)
-  speedIncrementPerObstacle: 0.06, // Speed added for every obstacle passed
-  maxObstacleSpeed: 5.0,       // Maximum speed cap
-  baseObstacleGap: 185,        // Slightly tighter starting gap
+  gravity: 0.42,              // Crisp, responsive flight gravity
+  flapStrength: -7.5,          // Agile flight impulse matching faster pace
+  terminalVelocity: 9.5,       // Max fall velocity
+  baseObstacleSpeed: 3.1,      // Faster starting obstacle speed for exciting early game
+  speedIncrementPerObstacle: 0.07, // Speed added for every obstacle passed
+  maxObstacleSpeed: 5.2,       // Maximum speed cap
+  baseObstacleGap: 180,        // Tighter starting gap
   gapShrinkPerObstacle: 2.2,   // Pixels gap shrinks per obstacle passed
-  minObstacleGap: 130,         // Floor minimum gap height
-  obstacleSpacing: 300,        // Starting spacing between obstacles
+  minObstacleGap: 128,         // Floor minimum gap height
+  obstacleSpacing: 290,        // Starting spacing between obstacles
   scorePerObstacle: 10,
   quizBonus: 50,
   streakBonusThreshold: 3,
