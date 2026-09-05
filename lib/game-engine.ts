@@ -318,15 +318,27 @@ export class GameEngine {
 
   private getSpeedAndGap() {
     const diffInfo = DIFFICULTIES.find(d => d.level === this.currentDifficulty) || DIFFICULTIES[0];
-    const speed = GAME_CONFIG.baseObstacleSpeed * diffInfo.speedMultiplier;
+    
+    // Speed increases dynamically with every obstacle passed
+    const dynamicSpeed = GAME_CONFIG.baseObstacleSpeed + (this.obstaclesPassedCount * GAME_CONFIG.speedIncrementPerObstacle);
+    const speed = Math.min(
+      GAME_CONFIG.maxObstacleSpeed,
+      dynamicSpeed * diffInfo.speedMultiplier
+    );
+
+    // Gap narrows down dynamically with every obstacle passed
+    const dynamicGap = GAME_CONFIG.baseObstacleGap - (this.obstaclesPassedCount * GAME_CONFIG.gapShrinkPerObstacle);
     const gap = Math.max(
       GAME_CONFIG.minObstacleGap,
-      GAME_CONFIG.baseObstacleGap * diffInfo.gapMultiplier
+      dynamicGap * diffInfo.gapMultiplier
     );
+
+    // Spacing narrows down gradually as speed ramps up
     const spacing = Math.max(
-      280,
-      GAME_CONFIG.obstacleSpacing / diffInfo.speedMultiplier
+      240,
+      GAME_CONFIG.obstacleSpacing - (this.obstaclesPassedCount * 2.5)
     );
+
     return { speed, gap, spacing };
   }
 

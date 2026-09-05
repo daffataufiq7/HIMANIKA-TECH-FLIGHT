@@ -3,7 +3,10 @@ export interface GameConfig {
   flapStrength: number;
   terminalVelocity: number;
   baseObstacleSpeed: number;
+  speedIncrementPerObstacle: number;
+  maxObstacleSpeed: number;
   baseObstacleGap: number;
+  gapShrinkPerObstacle: number;
   minObstacleGap: number;
   obstacleSpacing: number;
   scorePerObstacle: number;
@@ -17,13 +20,16 @@ export interface GameConfig {
 }
 
 export const GAME_CONFIG: GameConfig = {
-  gravity: 0.35,              // Smooth and gentle fall physics
-  flapStrength: -6.6,          // Easy-to-control flight impulse for mobile tap & spacebar
-  terminalVelocity: 8.0,       // Max fall speed ceiling
-  baseObstacleSpeed: 2.0,      // Relaxed starting speed for easy warmup
-  baseObstacleGap: 240,        // Very wide starting gap (super easy early game)
-  minObstacleGap: 160,         // Floor for minimum gap size
-  obstacleSpacing: 370,        // Generous starting spacing between obstacles
+  gravity: 0.38,              // Responsive flight gravity
+  flapStrength: -7.0,          // Crisp flight impulse
+  terminalVelocity: 9.0,       // Max fall velocity
+  baseObstacleSpeed: 2.4,      // Starting obstacle speed
+  speedIncrementPerObstacle: 0.05, // Speed added for every single obstacle passed
+  maxObstacleSpeed: 4.8,       // Maximum speed cap
+  baseObstacleGap: 195,        // Tighter starting gap between top/bottom pipes
+  gapShrinkPerObstacle: 2.0,   // Pixels gap shrinks per obstacle passed
+  minObstacleGap: 135,         // Minimum gap floor for precision gameplay
+  obstacleSpacing: 320,        // Starting spacing between obstacles
   scorePerObstacle: 10,
   quizBonus: 50,
   streakBonusThreshold: 3,
@@ -31,7 +37,7 @@ export const GAME_CONFIG: GameConfig = {
   zoneBonusPoints: 100,
   quizInterval: 5,
   quizTimeLimit: 10,
-  postQuizGraceObstacles: 3,   // 3 safe grace passes after each quiz
+  postQuizGraceObstacles: 2,   // 2 safe grace passes after answering quiz
 };
 
 const GAME_CONFIG_KEY = "himanika_custom_game_config";
